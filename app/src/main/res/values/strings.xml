@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">RetroKit</string>
+    <string name="not_available">Not available</string>
+    <string name="server_not_available">We are currently not able to process your request. Please try after some time.</string>
+</resources>
