@@ -2,11 +2,11 @@ package com.example.okmac.retrokit.models;
 
 import java.io.Serializable;
 
-public class ErrorPoJo implements Serializable {
-    String message;
-    int status;
-    int code;
-    String developerMessage;
+public class ErrorObject implements Serializable {
+    private String message;
+    private int status;
+    private int code;
+    private String developerMessage;
     private String field1;
     private String field2;
 

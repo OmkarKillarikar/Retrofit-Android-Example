@@ -9,11 +9,14 @@ public class Constants {
     }
 
     public interface UrlPath {
-        String EMERGENCY_SERVICES = "qwe";
+        String EMERGENCY_SERVICES = "yourUrl/here/{parameter}";
+        String GET_SOMETHING_ELSE = "youAnother/url";
     }
 
+    //Need unique flags for all apis in case if hitting multiple apis in same activity/fragment
     public interface ApiFlags {
-        int GET_SERVICES = 0;
+        int GET_SOMETHING = 0;
+        int GET_SOMETHING_ELSE = 1;
     }
 
     public interface ErrorClass {

@@ -4,13 +4,12 @@ import android.content.Context;
 
 import com.example.okmac.retrokit.BuildConfig;
 import com.example.okmac.retrokit.listeners.RetrofitListener;
-import com.example.okmac.retrokit.models.ErrorPoJo;
+import com.example.okmac.retrokit.models.ErrorObject;
 import com.example.okmac.retrokit.utils.AppUtil;
 import com.example.okmac.retrokit.utils.ConfigUtils;
 import com.example.okmac.retrokit.utils.Constants;
 import com.example.okmac.retrokit.utils.HttpUtil;
 import com.example.okmac.retrokit.utils.Logger;
-import com.example.okmac.retrokit.utils.ProfilePreferences;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -28,7 +27,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitBase {
     protected Retrofit retrofit;
-    protected ProfilePreferences profilePreference;
     protected Context context;
     private Logger logger;
 
@@ -68,7 +66,6 @@ public class RetrofitBase {
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
-        profilePreference = new ProfilePreferences(context);
     }
 
     private void addVersioningHeaders(OkHttpClient.Builder builder, Context context) {
@@ -104,9 +101,9 @@ public class RetrofitBase {
 
     private void error(Response response, RetrofitListener retrofitListener, int apiFlag) {
         Gson gson = new Gson();
-        ErrorPoJo errorPojo;
+        ErrorObject errorPojo;
         try {
-            errorPojo = gson.fromJson((response.errorBody()).string(), ErrorPoJo.class);
+            errorPojo = gson.fromJson((response.errorBody()).string(), ErrorObject.class);
             if (errorPojo == null) {
                 errorPojo = HttpUtil.getServerErrorPojo(context);
             }
@@ -115,57 +112,4 @@ public class RetrofitBase {
             retrofitListener.onResponseError(HttpUtil.getServerErrorPojo(context), null, apiFlag);
         }
     }
-
-    /*protected void checkVersioningHeader(final RetrofitListener retrofitListener, Call call, Response response, int apiFlag) {
-        //Getting headers from response object
-        Headers headers = response.headers();
-        //Storing it in a Map for evaluation
-        Map<String, List<String>> headersMultiMap = headers.toMultimap();
-        //Checking the headers for FORCE_UPDATE and its value to be true
-        if (headersMultiMap.containsKey(AppConstants.ApiHeader.FORCE_UPDATE)
-                && headersMultiMap.get(AppConstants.ApiHeader.FORCE_UPDATE).get(0).equalsIgnoreCase("true")) {
-            ApplicationPreference applicationPreference = new ApplicationPreference(context);
-            applicationPreference.setShowForceUpdateScreen(true);
-            applicationPreference.setPreviousApplicationVersion(AppUtil.getApplicationVersionCode(context));
-            //If true then calling the Update Screen to display to the user
-            if (this.activity != null) {
-                AppUtil.callForceUpdateScreen(activity);
-            }
-        } else {
-            validateResponse(retrofitListener,call, response, apiFlag);
-        }
-    }*/
-
-    /*protected void validateResponse(final RetrofitListener retrofitListener, Call call, Response response, int apiFlag) {
-        if (response.code() == 200) {
-            ResponseBody responseBody = (ResponseBody) response.body();
-            String responseBodyString = null;
-            try {
-                responseBodyString = responseBody.string();
-            } catch (Exception e) {
-                logger.error(e);
-            }
-            if (responseBodyString != null) {
-                retrofitListener.onResponseSuccess(responseBodyString, apiFlag);
-            } else {
-                retrofitListener.onResponseError(HttpUtil.getServerErrorPojo(context), null, apiFlag);
-            }
-        } else if (response.code() == 401) {
-            if (activity != null) {
-                AppUtil.callForceLoginScreen(activity);
-            }
-        } else {
-            Gson gson = new Gson();
-            ErrorPoJo errorPojo;
-            try {
-                errorPojo = gson.fromJson((response.errorBody()).string(), ErrorPoJo.class);
-                if (errorPojo == null) {
-                    errorPojo = HttpUtil.getServerErrorPojo(context);
-                }
-                retrofitListener.onResponseError(errorPojo, null, apiFlag);
-            } catch (Exception e) {
-                retrofitListener.onResponseError(HttpUtil.getServerErrorPojo(context), null, apiFlag);
-            }
-        }
-    }*/
 }

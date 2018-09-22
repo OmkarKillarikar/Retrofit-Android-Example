@@ -3,7 +3,7 @@ package com.example.okmac.retrokit.utils;
 import android.content.Context;
 
 import com.example.okmac.retrokit.R;
-import com.example.okmac.retrokit.models.ErrorPoJo;
+import com.example.okmac.retrokit.models.ErrorObject;
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
@@ -34,10 +34,10 @@ public class HttpUtil {
      *
      * @return
      */
-    public static ErrorPoJo getServerErrorPojo(Context context) {
+    public static ErrorObject getServerErrorPojo(Context context) {
         try {
             Gson gson = new Gson();
-            return gson.fromJson(getServerErrorJsonObject(context).toString(), ErrorPoJo.class);
+            return gson.fromJson(getServerErrorJsonObject(context).toString(), ErrorObject.class);
         } catch (Exception e) {
             logger.error(e);
         }

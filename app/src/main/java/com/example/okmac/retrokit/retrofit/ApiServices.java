@@ -10,6 +10,9 @@ import retrofit2.http.Path;
 public interface ApiServices {
 
     @GET(Constants.UrlPath.EMERGENCY_SERVICES)
-    Call<ResponseBody> getEmergencyService(@Path("service") String service);
+    Call<ResponseBody> getSomething(@Path("service") String service);
+
+    @GET(Constants.UrlPath.GET_SOMETHING_ELSE)
+    Call<ResponseBody> getSomethingElse();
 
 }
